@@ -1,0 +1,16 @@
+Class {
+	#name : 'FASTTypeScriptExpressionStatement',
+	#superclass : 'FASTTypeScriptEntity',
+	#category : 'FAST-TypeScript-Model-Entities',
+	#package : 'FAST-TypeScript-Model',
+	#tag : 'Entities'
+}
+
+{ #category : 'meta' }
+FASTTypeScriptExpressionStatement class >> annotation [
+
+	<FMClass: #ExpressionStatement super: #FASTTypeScriptEntity>
+	<package: #'FAST-TypeScript-Model'>
+	<generated>
+	^ self
+]

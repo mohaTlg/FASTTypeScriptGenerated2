@@ -1,6 +1,6 @@
 Class {
 	#name : 'FASTTypeScriptAwaitExpression',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptExpression',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -9,7 +9,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptAwaitExpression class >> annotation [
 
-	<FMClass: #AwaitExpression super: #FASTTypeScriptEntity>
+	<FMClass: #AwaitExpression super: #FASTTypeScriptExpression>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

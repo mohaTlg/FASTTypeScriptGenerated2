@@ -1,6 +1,8 @@
 Class {
 	#name : 'FASTTypeScriptAssertsAnnotation',
 	#superclass : 'FASTTypeScriptEntity',
+	#traits : 'FASTTypeScriptTReturnType',
+	#classTraits : 'FASTTypeScriptTReturnType classTrait',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'

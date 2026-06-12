@@ -256,6 +256,7 @@
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
+| `comments` | `FASTTWithComments` | `container` | `FASTTComment` | list of comments defined in the entity|
 | `genericChildren` | `FASTTypeScriptEntity` | `genericParent` | `FASTTypeScriptEntity` | |
 
 
@@ -271,8 +272,8 @@
 Class {
 	#name : 'FASTTypeScriptEntity',
 	#superclass : 'MooseEntity',
-	#traits : 'FASTTEntity',
-	#classTraits : 'FASTTEntity classTrait',
+	#traits : 'FASTTEntity + FASTTWithComments',
+	#classTraits : 'FASTTEntity classTrait + FASTTWithComments classTrait',
 	#instVars : [
 		'#genericChildren => FMMany type: #FASTTypeScriptEntity opposite: #genericParent',
 		'#genericParent => FMOne type: #FASTTypeScriptEntity opposite: #genericChildren'
@@ -359,7 +360,56 @@ FASTTypeScriptEntity >> genericParentGroup [
 ]
 
 { #category : 'testing' }
+FASTTypeScriptEntity >> isBooleanLiteral [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTTypeScriptEntity >> isExpression [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTTypeScriptEntity >> isExpressionStatement [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTTypeScriptEntity >> isLiteral [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTTypeScriptEntity >> isNullPointerLiteral [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
 FASTTypeScriptEntity >> isQueryable [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTTypeScriptEntity >> isStatement [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTTypeScriptEntity >> isStringLiteral [
 
 	<generated>
 	^ false

@@ -193,7 +193,14 @@ Class {
 		'tReturnType',
 		'tOptionalField',
 		'tWithComments',
-		'tStatement'
+		'tStatement',
+		'literal',
+		'boolean',
+		'_true',
+		'_false',
+		'_super',
+		'expression',
+		'statement'
 	],
 	#category : 'FAST-TypeScript-Model-Generator',
 	#package : 'FAST-TypeScript-Model-Generator'
@@ -400,6 +407,13 @@ FASTTypeScriptMetamodelGenerator >> defineClasses [
 	whileStatement := builder newClassNamed: #WhileStatement.
 	withStatement := builder newClassNamed: #WithStatement.
 	yieldExpression := builder newClassNamed: #YieldExpression.
+	literal := builder ensureClassNamed: #Literal.
+	boolean := builder ensureClassNamed: #Boolean.
+	_true := builder ensureClassNamed: #True.
+	_false := builder ensureClassNamed: #False.
+	_super := builder ensureClassNamed: #Super.
+	expression := builder ensureClassNamed: #Expression. 
+	statement := builder ensureClassNamed: #Statement. 
 ]
 
 { #category : 'definition' }
@@ -408,11 +422,147 @@ FASTTypeScriptMetamodelGenerator >> defineHierarchy [
 
 	super defineHierarchy.
 
+	"Inheritance"
+
 	entity --|> tEntity.
-	
-		program --|> #THasImmediateSource.
+	entity --|> tWithComments.
+
+	program --|> tEntity.
+
+	number --|> literal.
+	string --|> literal.
+	null --|> literal.
+	boolean --|> literal.
+	_true --|> boolean.
+	_false --|> boolean.
+
+	abstractClassDeclaration --|> classDeclaration.
+
+	"Traits"
+	literal --|> tLiteral.
+	string --|> #TStringLiteral.
+	boolean --|> #TBooleanLiteral.
+	null --|> #TNullPointerLiteral.
+
+	program --|> tEntity.
+	program --|> #THasImmediateSource.
+	program withPrecedenceOf: #THasImmediateSource.
 
 	_ERROR --|> #THasImmediateSource.
+	program withPrecedenceOf: #THasImmediateSource.
+
+	classDeclaration --|> tDeclaration.
+	classDeclaration --|> tWithDeclarations.
+	classDeclaration --|> tWithModifiers.
+	classDeclaration --|> tStatement.
+
+	interfaceDeclaration --|> tDeclaration.
+	interfaceDeclaration --|> tWithDeclarations.
+	interfaceDeclaration --|> tWithModifiers.
+	interfaceDeclaration --|> tStatement.
+
+
+	enumDeclaration --|> tDeclaration.
+	enumDeclaration --|> tWithDeclarations.
+	enumDeclaration --|> tWithModifiers.
+	enumDeclaration --|> tStatement.
+
+	typeAnnotation --|> tOptionalField.
+	typeAnnotation --|> tReturnType.
+
+	assertsAnnotation --|> tReturnType.
+
+	identifier --|> tOptionalField.
+
+	typeArguments --|> tOptionalField.
+
+	identifier --|> tExpression.
+	expression --|> tExpression.
+	arrayPattern --|> tExpression.
+	typeIdentifier --|> tExpression.
+	conditionalType --|> tExpression.
+	flowMaybeType --|> tExpression.
+	parenthesizedType --|> tExpression.
+	functionType --|> tExpression.
+	predefinedType --|> tExpression.
+	genericType --|> tExpression.
+	arrayType --|> tExpression.
+	objectType --|> tExpression.
+	privatePropertyIdentifier --|> tExpression.
+	propertyIdentifier --|> tExpression.
+	class --|> tExpression.
+	this --|> tExpression.
+	_super --|> tExpression.
+	array --|> tExpression.
+	undefined --|> tExpression.
+	regex --|> tExpression.
+	arrowFunction --|> tExpression.
+	
+	unionType --|> tExpression.
+	typeArguments --|> tExpression.
+	typeAssertion --|> tExpression.
+	typeParameter --|> tExpression.
+	typeParameters --|> tExpression.
+	typePredicate --|> tExpression.
+	typePredicateAnnotation --|> tExpression.
+	typeQuery --|> tExpression.
+	typeAnnotation --|> tExpression.
+	tupleType --|> tExpression.
+	thisType --|> tExpression.
+	templateType --|> tExpression.
+	templateLiteralType --|> tExpression.
+	readonlyType --|> tExpression.
+	restType --|> tExpression.
+	optionalType --|> tExpression.
+	
+
+	binaryExpression --|> expression.
+	unaryExpression --|> expression.
+	memberExpression --|> expression.
+	callExpression --|> expression.
+	asExpression --|> expression.
+	assignmentExpression --|> expression.
+	augmentedAssignmentExpression --|> expression.
+	awaitExpression --|> expression.
+	functionExpression --|> expression.
+	instantiationExpression --|> expression.
+	newExpression --|> expression.
+	nonNullExpression --|> expression.
+	parenthesizedExpression --|> expression.
+	satisfiesExpression --|> expression.
+	sequenceExpression --|> expression.
+	subscriptExpression --|> expression.
+	ternaryExpression --|> expression.
+	updateExpression --|> expression.
+	yieldExpression --|> expression.
+	object --|> expression.
+
+	statement --|> tStatement.
+	breakStatement --|> statement.
+	labeledStatement --|> statement.
+	statementIdentifier --|> statement.
+	doStatement --|> statement.
+	importStatement --|> statement.
+	debuggerStatement --|> statement.
+	exportStatement --|> statement.
+	switchStatement --|> statement.
+	forStatement --|> statement.
+	returnStatement --|> statement.
+	withStatement --|> statement.
+	throwStatement --|> statement.
+	emptyStatement --|> statement.
+	tryStatement --|> statement.
+	ifStatement --|> statement.
+	forInStatement --|> statement.
+	statementBlock --|> statement.
+	continueStatement --|> statement.
+	expressionStatement --|> statement.
+	expressionStatement --|> #TExpressionStatement .
+	whileStatement --|> statement.
+
+	typePredicateAnnotation --|> typeAnnotation
+
+	"_function_type  --|> tWithParameters.	"
 ]
 
 { #category : 'definition' }

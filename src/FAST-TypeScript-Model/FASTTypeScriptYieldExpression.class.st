@@ -1,6 +1,6 @@
 Class {
 	#name : 'FASTTypeScriptYieldExpression',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptExpression',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -9,7 +9,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptYieldExpression class >> annotation [
 
-	<FMClass: #YieldExpression super: #FASTTypeScriptEntity>
+	<FMClass: #YieldExpression super: #FASTTypeScriptExpression>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

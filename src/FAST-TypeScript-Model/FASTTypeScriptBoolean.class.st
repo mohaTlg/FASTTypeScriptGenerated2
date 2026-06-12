@@ -260,11 +260,6 @@
 | `withStatementBodyOwner` | `FASTTEntity` | `body` | `FASTTypeScriptWithStatement` | |
 | `withStatementObjectOwner` | `FASTTEntity` | `object` | `FASTTypeScriptWithStatement` | |
 
-### Children
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `childrenNodes` | `FASTTypeScriptTypeParameters` | `typeParametersOwner` | `FASTTEntity` | |
-
 
 ## Properties
 ======================
@@ -272,54 +267,25 @@
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `primitiveValue` | `String` | nil | The literal itself as found in the source code. We use primitiveValue in order to override value from Object|
 | `startPos` | `Number` | nil | |
 
 "
 Class {
-	#name : 'FASTTypeScriptTypeParameters',
-	#superclass : 'FASTTypeScriptEntity',
-	#traits : 'FASTTExpression',
-	#classTraits : 'FASTTExpression classTrait',
+	#name : 'FASTTypeScriptBoolean',
+	#superclass : 'FASTTypeScriptLiteral',
+	#traits : 'FASTTBooleanLiteral',
+	#classTraits : 'FASTTBooleanLiteral classTrait',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
 }
 
 { #category : 'meta' }
-FASTTypeScriptTypeParameters class >> annotation [
+FASTTypeScriptBoolean class >> annotation [
 
-	<FMClass: #TypeParameters super: #FASTTypeScriptEntity>
+	<FMClass: #Boolean super: #FASTTypeScriptLiteral>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self
-]
-
-{ #category : 'adding' }
-FASTTypeScriptTypeParameters >> addChildrenNode: anObject [
-	<generated>
-	^ self childrenNodes add: anObject
-]
-
-{ #category : 'accessing' }
-FASTTypeScriptTypeParameters >> childrenNodes [
-	"Relation named: #childrenNodes type: #FASTTEntity opposite: #typeParametersOwner"
-
-	<generated>
-	<derived>
-	<FMProperty: #childrenNodes type: #FASTTEntity opposite: #typeParametersOwner>
-	^ self attributeAt: #childrenNodes ifAbsentPut: [ FMMultivalueLink on: self opposite: #typeParametersOwner: ]
-]
-
-{ #category : 'accessing' }
-FASTTypeScriptTypeParameters >> childrenNodes: anObject [
-
-	<generated>
-	self childrenNodes value: anObject
-]
-
-{ #category : 'navigation' }
-FASTTypeScriptTypeParameters >> childrenNodesGroup [
-	<generated>
-	<navigation: 'ChildrenNodes'>
-	^ MooseSpecializedGroup withAll: self childrenNodes asSet
 ]

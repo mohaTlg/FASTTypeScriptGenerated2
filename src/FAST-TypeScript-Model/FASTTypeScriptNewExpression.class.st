@@ -14,7 +14,7 @@
 "
 Class {
 	#name : 'FASTTypeScriptNewExpression',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptExpression',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -23,7 +23,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptNewExpression class >> annotation [
 
-	<FMClass: #NewExpression super: #FASTTypeScriptEntity>
+	<FMClass: #NewExpression super: #FASTTypeScriptExpression>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

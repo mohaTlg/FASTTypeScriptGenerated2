@@ -12,7 +12,7 @@
 "
 Class {
 	#name : 'FASTTypeScriptParenthesizedExpression',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptExpression',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -21,7 +21,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptParenthesizedExpression class >> annotation [
 
-	<FMClass: #ParenthesizedExpression super: #FASTTypeScriptEntity>
+	<FMClass: #ParenthesizedExpression super: #FASTTypeScriptExpression>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

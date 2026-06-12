@@ -14,7 +14,6 @@
 | `abstractMethodSignatureReturnTypeOwner` | `FASTTEntity` | `returnType` | `FASTTypeScriptAbstractMethodSignature` | |
 | `abstractMethodSignatureTypeParametersOwner` | `FASTTEntity` | `typeParameters` | `FASTTypeScriptAbstractMethodSignature` | |
 | `ambientDeclarationOwner` | `FASTTEntity` | `childrenNodes` | `FASTTypeScriptAmbientDeclaration` | |
-| `argumentOwner` | `FASTTExpression` | `arguments` | `FASTTWithArguments` | my owner|
 | `argumentsOwner` | `FASTTEntity` | `childrenNodes` | `FASTTypeScriptArguments` | |
 | `arrayOwner` | `FASTTEntity` | `childrenNodes` | `FASTTypeScriptArray` | |
 | `arrayPatternOwner` | `FASTTEntity` | `childrenNodes` | `FASTTypeScriptArrayPattern` | |
@@ -24,7 +23,6 @@
 | `arrowFunctionReturnTypeOwner` | `FASTTEntity` | `returnType` | `FASTTypeScriptArrowFunction` | |
 | `arrowFunctionTypeParametersOwner` | `FASTTEntity` | `typeParameters` | `FASTTypeScriptArrowFunction` | |
 | `asExpressionOwner` | `FASTTEntity` | `childrenNodes` | `FASTTypeScriptAsExpression` | |
-| `assignedIn` | `FASTTExpression` | `expression` | `FASTTAssignment` | Optional assignment where this expression is used|
 | `assignmentExpressionLeftOwner` | `FASTTEntity` | `left` | `FASTTypeScriptAssignmentExpression` | |
 | `assignmentExpressionRightOwner` | `FASTTEntity` | `right` | `FASTTypeScriptAssignmentExpression` | |
 | `assignmentPatternLeftOwner` | `FASTTEntity` | `left` | `FASTTypeScriptAssignmentPattern` | |
@@ -81,7 +79,6 @@
 | `exportStatementDecoratorOwner` | `FASTTEntity` | `decorator` | `FASTTypeScriptExportStatement` | |
 | `exportStatementSourceOwner` | `FASTTEntity` | `source` | `FASTTypeScriptExportStatement` | |
 | `exportStatementValueOwner` | `FASTTEntity` | `value` | `FASTTypeScriptExportStatement` | |
-| `expressionStatementOwner` | `FASTTExpression` | `expression` | `FASTTExpressionStatement` | The expression statement that own me (if it's the case|
 | `extendsClauseTypeArgumentsOwner` | `FASTTEntity` | `typeArguments` | `FASTTypeScriptExtendsClause` | |
 | `extendsClauseValueOwner` | `FASTTEntity` | `value` | `FASTTypeScriptExtendsClause` | |
 | `extendsTypeClauseTypeOwner` | `FASTTEntity` | `type` | `FASTTypeScriptExtendsTypeClause` | |
@@ -193,10 +190,7 @@
 | `pairPatternKeyOwner` | `FASTTEntity` | `key` | `FASTTypeScriptPairPattern` | |
 | `pairPatternValueOwner` | `FASTTEntity` | `value` | `FASTTypeScriptPairPattern` | |
 | `pairValueOwner` | `FASTTEntity` | `value` | `FASTTypeScriptPair` | |
-| `parentConditional` | `FASTTExpression` | `condition` | `FASTTWithCondition` | Optional condition statement/expression where this expression is used|
-| `parentExpression` | `FASTTExpression` | `expression` | `FASTTUnaryExpression` | Parent (unary) expression|
-| `parentExpressionLeft` | `FASTTExpression` | `leftOperand` | `FASTTBinaryExpression` | Parent (binary) expression of which I am left side|
-| `parentExpressionRight` | `FASTTExpression` | `rightOperand` | `FASTTBinaryExpression` | Parent (binary) expression of which I am right side|
+| `parentLoopStatement` | `FASTTStatement` | `body` | `FASTTLoopStatement` | Optional loop of which this statement is the body|
 | `parenthesizedExpressionTypeOwner` | `FASTTEntity` | `type` | `FASTTypeScriptParenthesizedExpression` | |
 | `programOwner` | `FASTTEntity` | `childrenNodes` | `FASTTypeScriptProgram` | |
 | `propertySignatureNameOwner` | `FASTTEntity` | `name` | `FASTTypeScriptPropertySignature` | |
@@ -212,10 +206,10 @@
 | `requiredParameterPatternOwner` | `FASTTEntity` | `pattern` | `FASTTypeScriptRequiredParameter` | |
 | `requiredParameterTypeOwner` | `FASTTEntity` | `type` | `FASTTypeScriptRequiredParameter` | |
 | `requiredParameterValueOwner` | `FASTTEntity` | `value` | `FASTTypeScriptRequiredParameter` | |
-| `returnOwner` | `FASTTExpression` | `expression` | `FASTTReturnStatement` | The return statement that own the expression (if it's the case)|
 | `satisfiesExpressionOwner` | `FASTTEntity` | `childrenNodes` | `FASTTypeScriptSatisfiesExpression` | |
 | `sequenceExpressionOwner` | `FASTTEntity` | `childrenNodes` | `FASTTypeScriptSequenceExpression` | |
 | `statementBlockOwner` | `FASTTEntity` | `childrenNodes` | `FASTTypeScriptStatementBlock` | |
+| `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 | `stringOwner` | `FASTTEntity` | `childrenNodes` | `FASTTypeScriptString` | |
 | `subscriptExpressionIndexOwner` | `FASTTEntity` | `index` | `FASTTypeScriptSubscriptExpression` | |
 | `subscriptExpressionObjectOwner` | `FASTTEntity` | `object` | `FASTTypeScriptSubscriptExpression` | |
@@ -260,11 +254,6 @@
 | `withStatementBodyOwner` | `FASTTEntity` | `body` | `FASTTypeScriptWithStatement` | |
 | `withStatementObjectOwner` | `FASTTEntity` | `object` | `FASTTypeScriptWithStatement` | |
 
-### Children
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `childrenNodes` | `FASTTypeScriptTypeParameters` | `typeParametersOwner` | `FASTTEntity` | |
-
 
 ## Properties
 ======================
@@ -276,50 +265,20 @@
 
 "
 Class {
-	#name : 'FASTTypeScriptTypeParameters',
+	#name : 'FASTTypeScriptStatement',
 	#superclass : 'FASTTypeScriptEntity',
-	#traits : 'FASTTExpression',
-	#classTraits : 'FASTTExpression classTrait',
+	#traits : 'FASTTStatement',
+	#classTraits : 'FASTTStatement classTrait',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
 }
 
 { #category : 'meta' }
-FASTTypeScriptTypeParameters class >> annotation [
+FASTTypeScriptStatement class >> annotation [
 
-	<FMClass: #TypeParameters super: #FASTTypeScriptEntity>
+	<FMClass: #Statement super: #FASTTypeScriptEntity>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self
-]
-
-{ #category : 'adding' }
-FASTTypeScriptTypeParameters >> addChildrenNode: anObject [
-	<generated>
-	^ self childrenNodes add: anObject
-]
-
-{ #category : 'accessing' }
-FASTTypeScriptTypeParameters >> childrenNodes [
-	"Relation named: #childrenNodes type: #FASTTEntity opposite: #typeParametersOwner"
-
-	<generated>
-	<derived>
-	<FMProperty: #childrenNodes type: #FASTTEntity opposite: #typeParametersOwner>
-	^ self attributeAt: #childrenNodes ifAbsentPut: [ FMMultivalueLink on: self opposite: #typeParametersOwner: ]
-]
-
-{ #category : 'accessing' }
-FASTTypeScriptTypeParameters >> childrenNodes: anObject [
-
-	<generated>
-	self childrenNodes value: anObject
-]
-
-{ #category : 'navigation' }
-FASTTypeScriptTypeParameters >> childrenNodesGroup [
-	<generated>
-	<navigation: 'ChildrenNodes'>
-	^ MooseSpecializedGroup withAll: self childrenNodes asSet
 ]

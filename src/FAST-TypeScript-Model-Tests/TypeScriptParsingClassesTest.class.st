@@ -24,6 +24,23 @@ TypeScriptParsingClassesTest >> tearDown [
 ]
 
 { #category : 'running' }
+TypeScriptParsingClassesTest >> testParsingArray [
+
+	| res string  |
+
+	string := '[, a, , b, , , , s, , , ]'.
+	res := parser parse: string.
+
+	"Checking if FASTTypescriptArray parsed correctly"
+	self assert:
+		(res allWithType: FASTTypeScriptArray) isNotEmpty.
+	
+	
+	 
+	
+]
+
+{ #category : 'running' }
 TypeScriptParsingClassesTest >> testParsingArrowFunction [
 
 	| res string node secondNode| 
@@ -44,6 +61,25 @@ TypeScriptParsingClassesTest >> testParsingArrowFunction [
 	
 	self assert: secondNode parameters sourceCode equals: '(x, y)'.
 	
+]
+
+{ #category : 'running' }
+TypeScriptParsingClassesTest >> testParsingForInStatement [
+
+	| res string forNode |
+ 
+	string := 'for (const key in obj) {	}'.
+	res := parser parse: string.
+
+	"Checking if FASTTypescriptFor_in_statement parsed correctly"
+	self assert:
+		(res allWithType: FASTTypeScriptForInStatement) isNotEmpty.
+	
+	"Checking properties of FASTTypescriptFor_in_statement"	
+	forNode := (res allWithType: FASTTypeScriptForInStatement) first.
+	self assert: forNode right class equals: FASTTypeScriptIdentifier.
+	self assert: forNode left class equals: FASTTypeScriptIdentifier.
+	self assert: forNode body class equals: FASTTypeScriptStatementBlock.
 ]
 
 { #category : 'running' }

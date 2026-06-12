@@ -1,6 +1,6 @@
 Class {
 	#name : 'FASTTypeScriptTrue',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptBoolean',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -9,7 +9,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptTrue class >> annotation [
 
-	<FMClass: #True super: #FASTTypeScriptEntity>
+	<FMClass: #True super: #FASTTypeScriptBoolean>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

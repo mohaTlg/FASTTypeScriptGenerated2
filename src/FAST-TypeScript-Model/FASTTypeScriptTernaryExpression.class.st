@@ -14,7 +14,7 @@
 "
 Class {
 	#name : 'FASTTypeScriptTernaryExpression',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptExpression',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -23,7 +23,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptTernaryExpression class >> annotation [
 
-	<FMClass: #TernaryExpression super: #FASTTypeScriptEntity>
+	<FMClass: #TernaryExpression super: #FASTTypeScriptExpression>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

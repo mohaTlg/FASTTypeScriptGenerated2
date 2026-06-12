@@ -14,7 +14,7 @@
 "
 Class {
 	#name : 'FASTTypeScriptIfStatement',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptStatement',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -23,7 +23,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptIfStatement class >> annotation [
 
-	<FMClass: #IfStatement super: #FASTTypeScriptEntity>
+	<FMClass: #IfStatement super: #FASTTypeScriptStatement>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

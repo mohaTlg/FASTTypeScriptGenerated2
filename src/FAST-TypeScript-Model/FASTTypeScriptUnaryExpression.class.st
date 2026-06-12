@@ -13,7 +13,7 @@
 "
 Class {
 	#name : 'FASTTypeScriptUnaryExpression',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptExpression',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -22,7 +22,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptUnaryExpression class >> annotation [
 
-	<FMClass: #UnaryExpression super: #FASTTypeScriptEntity>
+	<FMClass: #UnaryExpression super: #FASTTypeScriptExpression>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

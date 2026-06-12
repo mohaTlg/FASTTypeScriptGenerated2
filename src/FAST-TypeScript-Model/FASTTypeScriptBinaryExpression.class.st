@@ -14,7 +14,7 @@
 "
 Class {
 	#name : 'FASTTypeScriptBinaryExpression',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptExpression',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -23,7 +23,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptBinaryExpression class >> annotation [
 
-	<FMClass: #BinaryExpression super: #FASTTypeScriptEntity>
+	<FMClass: #BinaryExpression super: #FASTTypeScriptExpression>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

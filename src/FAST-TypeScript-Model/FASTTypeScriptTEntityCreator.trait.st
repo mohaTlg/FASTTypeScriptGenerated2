@@ -147,6 +147,13 @@ FASTTypeScriptTEntityCreator >> newBinaryExpression [
 ]
 
 { #category : 'entity creation' }
+FASTTypeScriptTEntityCreator >> newBoolean [
+
+	<generated>
+	^ self add: FASTTypeScriptBoolean new
+]
+
+{ #category : 'entity creation' }
 FASTTypeScriptTEntityCreator >> newBreakStatement [
 
 	<generated>
@@ -361,6 +368,13 @@ FASTTypeScriptTEntityCreator >> newExportStatement [
 
 	<generated>
 	^ self add: FASTTypeScriptExportStatement new
+]
+
+{ #category : 'entity creation' }
+FASTTypeScriptTEntityCreator >> newExpression [
+
+	<generated>
+	^ self add: FASTTypeScriptExpression new
 ]
 
 { #category : 'entity creation' }
@@ -634,6 +648,13 @@ FASTTypeScriptTEntityCreator >> newLexicalDeclaration [
 
 	<generated>
 	^ self add: FASTTypeScriptLexicalDeclaration new
+]
+
+{ #category : 'entity creation' }
+FASTTypeScriptTEntityCreator >> newLiteral [
+
+	<generated>
+	^ self add: FASTTypeScriptLiteral new
 ]
 
 { #category : 'entity creation' }
@@ -984,6 +1005,13 @@ FASTTypeScriptTEntityCreator >> newSpreadElement [
 
 	<generated>
 	^ self add: FASTTypeScriptSpreadElement new
+]
+
+{ #category : 'entity creation' }
+FASTTypeScriptTEntityCreator >> newStatement [
+
+	<generated>
+	^ self add: FASTTypeScriptStatement new
 ]
 
 { #category : 'entity creation' }

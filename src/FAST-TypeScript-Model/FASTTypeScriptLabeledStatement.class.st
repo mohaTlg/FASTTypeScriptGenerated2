@@ -13,7 +13,7 @@
 "
 Class {
 	#name : 'FASTTypeScriptLabeledStatement',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptStatement',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -22,7 +22,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptLabeledStatement class >> annotation [
 
-	<FMClass: #LabeledStatement super: #FASTTypeScriptEntity>
+	<FMClass: #LabeledStatement super: #FASTTypeScriptStatement>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

@@ -16,7 +16,7 @@
 "
 Class {
 	#name : 'FASTTypeScriptGeneratorFunction',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptExpression',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -25,7 +25,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptGeneratorFunction class >> annotation [
 
-	<FMClass: #GeneratorFunction super: #FASTTypeScriptEntity>
+	<FMClass: #GeneratorFunction super: #FASTTypeScriptExpression>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

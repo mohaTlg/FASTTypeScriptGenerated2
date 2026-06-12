@@ -17,6 +17,8 @@
 Class {
 	#name : 'FASTTypeScriptFunctionDeclaration',
 	#superclass : 'FASTTypeScriptEntity',
+	#traits : 'FASTTypeScriptTDeclaration',
+	#classTraits : 'FASTTypeScriptTDeclaration classTrait',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'

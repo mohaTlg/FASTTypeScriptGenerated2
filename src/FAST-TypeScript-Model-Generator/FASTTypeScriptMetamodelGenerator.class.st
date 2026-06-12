@@ -418,158 +418,233 @@ FASTTypeScriptMetamodelGenerator >> defineClasses [
 
 { #category : 'definition' }
 FASTTypeScriptMetamodelGenerator >> defineHierarchy [
-	"define class hierarchy"
+    super defineHierarchy.
 
-	super defineHierarchy.
+    " --- Base FAST & Moose --- "
+    entity --|> tEntity.
+    entity --|> tWithComments.
+    program --|> tEntity.
+    program --|> #THasImmediateSource.
+    program withPrecedenceOf: #THasImmediateSource.
+    _ERROR --|> #THasImmediateSource.
+    program withPrecedenceOf: #THasImmediateSource.
 
-	"Inheritance"
+    " --- Littéraux & Types de Base --- "
+    number --|> literal.
+    string --|> literal.
+    null --|> literal.
+    boolean --|> literal.
+    _true --|> boolean.
+    _false --|> boolean.
 
-	entity --|> tEntity.
-	entity --|> tWithComments.
+    literal --|> tLiteral.
+    string --|> #TStringLiteral.
+    boolean --|> #TBooleanLiteral.
+    null --|> #TNullPointerLiteral.
 
-	program --|> tEntity.
+    " --- Classes Intermédiaires vers les Traits --- "
+    expression --|> tExpression.
+    statement --|> tStatement.
 
-	number --|> literal.
-	string --|> literal.
-	null --|> literal.
-	boolean --|> literal.
-	_true --|> boolean.
-	_false --|> boolean.
+    " --- Règles Spécifiques Déclarations & Modifieurs --- "
+    classDeclaration --|> tDeclaration.
+    classDeclaration --|> tWithDeclarations.
+    classDeclaration --|> tWithModifiers.
+    classDeclaration --|> tStatement.
 
-	abstractClassDeclaration --|> classDeclaration.
+    interfaceDeclaration --|> tDeclaration.
+    interfaceDeclaration --|> tWithDeclarations.
+    interfaceDeclaration --|> tWithModifiers.
+    interfaceDeclaration --|> tStatement.
 
-	"Traits"
-	literal --|> tLiteral.
-	string --|> #TStringLiteral.
-	boolean --|> #TBooleanLiteral.
-	null --|> #TNullPointerLiteral.
+    enumDeclaration --|> tDeclaration.
+    enumDeclaration --|> tWithDeclarations.
+    enumDeclaration --|> tWithModifiers.
+    enumDeclaration --|> tStatement.
 
-	program --|> tEntity.
-	program --|> #THasImmediateSource.
-	program withPrecedenceOf: #THasImmediateSource.
+    " --- Annotations & Liaisons spécifiques --- "
+    typeAnnotation --|> tOptionalField.
+    typeAnnotation --|> tReturnType.
+    typeAnnotation --|> tExpression.
+    assertsAnnotation --|> tReturnType.
+    identifier --|> tOptionalField.
+    typeArguments --|> tOptionalField.
+    typePredicateAnnotation --|> typeAnnotation.
 
-	_ERROR --|> #THasImmediateSource.
-	program withPrecedenceOf: #THasImmediateSource.
+    " --- Cas Particulier ExpressionStatement (Trait additionnel) --- "
+    expressionStatement --|> #TExpressionStatement.
 
-	classDeclaration --|> tDeclaration.
-	classDeclaration --|> tWithDeclarations.
-	classDeclaration --|> tWithModifiers.
-	classDeclaration --|> tStatement.
+    " --- HIERARCHIE AUTO-GENEREE (DEPUIS NODE-TYPES.JSON) --- "
+    abstractClassDeclaration --|> tDeclaration.
+    abstractMethodSignature --|> entity.
+    accessibilityModifier --|> entity.
+    addingTypeAnnotation --|> entity.
+    ambientDeclaration --|> tDeclaration.
+    arguments --|> entity.
+    array --|> expression.
+    arrayPattern --|> tExpression.
+    arrayType --|> tExpression.
+    arrowFunction --|> expression.
+    asExpression --|> expression.
+    asserts --|> entity.
+    assignmentExpression --|> expression.
+    assignmentPattern --|> tExpression.
+    augmentedAssignmentExpression --|> expression.
+    awaitExpression --|> expression.
+    binaryExpression --|> expression.
+    breakStatement --|> statement.
+    callExpression --|> tExpression.
+    callSignature --|> entity.
+    catchClause --|> entity.
+    class --|> expression.
+    classBody --|> entity.
+    classHeritage --|> entity.
+    classStaticBlock --|> entity.
+    computedPropertyName --|> entity.
+    conditionalType --|> tExpression.
+    constraint --|> entity.
+    constructSignature --|> entity.
+    constructorType --|> tExpression.
+    continueStatement --|> statement.
+    debuggerStatement --|> statement.
+    decorator --|> entity.
+    defaultType --|> entity.
+    doStatement --|> statement.
+    elseClause --|> entity.
+    emptyStatement --|> statement.
+    enumAssignment --|> entity.
+    enumBody --|> entity.
+    existentialType --|> tExpression.
+    exportClause --|> entity.
+    exportSpecifier --|> entity.
+    exportStatement --|> statement.
+    expressionStatement --|> statement.
+    extendsClause --|> entity.
+    extendsTypeClause --|> entity.
+    finallyClause --|> entity.
+    flowMaybeType --|> tExpression.
+    forInStatement --|> statement.
+    forStatement --|> statement.
+    formalParameters --|> entity.
+    functionDeclaration --|> tDeclaration.
+    functionExpression --|> expression.
+    functionSignature --|> tDeclaration.
+    functionType --|> tExpression.
+    generatorFunction --|> expression.
+    generatorFunctionDeclaration --|> tDeclaration.
+    genericType --|> tExpression.
+    ifStatement --|> statement.
+    implementsClause --|> entity.
+    import --|> entity.
+    importAlias --|> tDeclaration.
+    importAttribute --|> entity.
+    importClause --|> entity.
+    importRequireClause --|> entity.
+    importSpecifier --|> entity.
+    importStatement --|> statement.
+    indexSignature --|> entity.
+    indexTypeQuery --|> tExpression.
+    inferType --|> tExpression.
+    instantiationExpression --|> expression.
+    interfaceBody --|> entity.
+    internalModule --|> expression.
+    intersectionType --|> tExpression.
+    labeledStatement --|> statement.
+    lexicalDeclaration --|> tDeclaration.
+    literalType --|> tExpression.
+    lookupType --|> tExpression.
+    mappedTypeClause --|> entity.
+    memberExpression --|> tExpression.
+    metaProperty --|> expression.
+    methodDefinition --|> entity.
+    methodSignature --|> entity.
+    module --|> tDeclaration.
+    namedImports --|> entity.
+    namespaceExport --|> entity.
+    namespaceImport --|> entity.
+    nestedIdentifier --|> entity.
+    nestedTypeIdentifier --|> tExpression.
+    newExpression --|> expression.
+    nonNullExpression --|> expression.
+    object --|> expression.
+    objectAssignmentPattern --|> tExpression.
+    objectPattern --|> tExpression.
+    objectType --|> tExpression.
+    omittingTypeAnnotation --|> entity.
+    optingTypeAnnotation --|> entity.
+    optionalChain --|> entity.
+    optionalParameter --|> entity.
+    optionalType --|> entity.
+    overrideModifier --|> entity.
+    pair --|> entity.
+    pairPattern --|> tExpression.
+    parenthesizedExpression --|> expression.
+    parenthesizedType --|> tExpression.
+    predefinedType --|> tExpression.
+    propertySignature --|> entity.
+    publicFieldDefinition --|> entity.
+    readonlyType --|> tExpression.
+    regex --|> expression.
+    requiredParameter --|> entity.
+    restPattern --|> tExpression.
+    restType --|> entity.
+    returnStatement --|> statement.
+    satisfiesExpression --|> expression.
+    sequenceExpression --|> expression.
+    spreadElement --|> entity.
+    statementBlock --|> statement.
+    subscriptExpression --|> expression.
+    switchBody --|> entity.
+    switchCase --|> entity.
+    switchDefault --|> entity.
+    switchStatement --|> statement.
+    templateLiteralType --|> tExpression.
+    templateString --|> expression.
+    templateSubstitution --|> entity.
+    templateType --|> entity.
+    ternaryExpression --|> expression.
+    throwStatement --|> statement.
+    tryStatement --|> statement.
+    tupleType --|> tExpression.
+    typeAliasDeclaration --|> tDeclaration.
+    typeAssertion --|> expression.
+    typeParameter --|> entity.
+    typeParameters --|> entity.
+    typePredicate --|> entity.
+    typeQuery --|> tExpression.
+    unaryExpression --|> expression.
+    unionType --|> tExpression.
+    updateExpression --|> expression.
+    variableDeclaration --|> tDeclaration.
+    variableDeclarator --|> entity.
+    whileStatement --|> statement.
+    withStatement --|> statement.
+    yieldExpression --|> expression.
+    comment --|> entity.
+    escapeSequence --|> entity.
+    hashBangLine --|> entity.
+    htmlComment --|> entity.
+    privatePropertyIdentifier --|> entity.
+    propertyIdentifier --|> entity.
+    regexFlags --|> entity.
+    regexPattern --|> tExpression.
+    shorthandPropertyIdentifier --|> entity.
+    shorthandPropertyIdentifierPattern --|> tExpression.
+    statementIdentifier --|> statement.
+    stringFragment --|> entity.
+    _super --|> expression.
+    this --|> expression.
+    thisType --|> tExpression.
+    typeIdentifier --|> tExpression.
+    undefined --|> expression.
 
-	interfaceDeclaration --|> tDeclaration.
-	interfaceDeclaration --|> tWithDeclarations.
-	interfaceDeclaration --|> tWithModifiers.
-	interfaceDeclaration --|> tStatement.
-
-
-	enumDeclaration --|> tDeclaration.
-	enumDeclaration --|> tWithDeclarations.
-	enumDeclaration --|> tWithModifiers.
-	enumDeclaration --|> tStatement.
-
-	typeAnnotation --|> tOptionalField.
-	typeAnnotation --|> tReturnType.
-
-	assertsAnnotation --|> tReturnType.
-
-	identifier --|> tOptionalField.
-
-	typeArguments --|> tOptionalField.
-
-	identifier --|> tExpression.
-	expression --|> tExpression.
-	arrayPattern --|> tExpression.
-	typeIdentifier --|> tExpression.
-	conditionalType --|> tExpression.
-	flowMaybeType --|> tExpression.
-	parenthesizedType --|> tExpression.
-	functionType --|> tExpression.
-	predefinedType --|> tExpression.
-	genericType --|> tExpression.
-	arrayType --|> tExpression.
-	objectType --|> tExpression.
-	privatePropertyIdentifier --|> tExpression.
-	propertyIdentifier --|> tExpression.
-	class --|> tExpression.
-	this --|> tExpression.
-	_super --|> tExpression.
-	array --|> tExpression.
-	undefined --|> tExpression.
-	regex --|> tExpression.
-	arrowFunction --|> tExpression.
-	
-	unionType --|> tExpression.
-	typeArguments --|> tExpression.
-	typeAssertion --|> tExpression.
-	typeParameter --|> tExpression.
-	typeParameters --|> tExpression.
-	typePredicate --|> tExpression.
-	typePredicateAnnotation --|> tExpression.
-	typeQuery --|> tExpression.
-	typeAnnotation --|> tExpression.
-	tupleType --|> tExpression.
-	thisType --|> tExpression.
-	templateType --|> tExpression.
-	templateLiteralType --|> tExpression.
-	readonlyType --|> tExpression.
-	restType --|> tExpression.
-	optionalType --|> tExpression.
-	
-
-	binaryExpression --|> expression.
-	unaryExpression --|> expression.
-	memberExpression --|> expression.
-	callExpression --|> expression.
-	asExpression --|> expression.
-	assignmentExpression --|> expression.
-	augmentedAssignmentExpression --|> expression.
-	awaitExpression --|> expression.
-	functionExpression --|> expression.
-	instantiationExpression --|> expression.
-	newExpression --|> expression.
-	nonNullExpression --|> expression.
-	parenthesizedExpression --|> expression.
-	satisfiesExpression --|> expression.
-	sequenceExpression --|> expression.
-	subscriptExpression --|> expression.
-	ternaryExpression --|> expression.
-	updateExpression --|> expression.
-	yieldExpression --|> expression.
-	object --|> expression.
-
-	statement --|> tStatement.
-	breakStatement --|> statement.
-	labeledStatement --|> statement.
-	statementIdentifier --|> statement.
-	doStatement --|> statement.
-	importStatement --|> statement.
-	debuggerStatement --|> statement.
-	exportStatement --|> statement.
-	switchStatement --|> statement.
-	forStatement --|> statement.
-	returnStatement --|> statement.
-	withStatement --|> statement.
-	throwStatement --|> statement.
-	emptyStatement --|> statement.
-	tryStatement --|> statement.
-	ifStatement --|> statement.
-	forInStatement --|> statement.
-	statementBlock --|> statement.
-	continueStatement --|> statement.
-	expressionStatement --|> statement.
-	expressionStatement --|> #TExpressionStatement .
-	whileStatement --|> statement.
-
-	typePredicateAnnotation --|> typeAnnotation
-
-	"_function_type  --|> tWithParameters.	"
 ]
 
 { #category : 'definition' }
 FASTTypeScriptMetamodelGenerator >> defineRelations [
     super defineRelations.
 
-		(entity property: #genericChildren)	<>-* (entity property: #genericParent).
+    (entity property: #genericChildren) <>-* (entity property: #genericParent).
 
     " ABSTRACT_CLASS_DECLARATION "
     ((abstractClassDeclaration property: #decorator) comment: '')

@@ -12,7 +12,7 @@
 "
 Class {
 	#name : 'FASTTypeScriptTemplateString',
-	#superclass : 'FASTTypeScriptEntity',
+	#superclass : 'FASTTypeScriptExpression',
 	#category : 'FAST-TypeScript-Model-Entities',
 	#package : 'FAST-TypeScript-Model',
 	#tag : 'Entities'
@@ -21,7 +21,7 @@ Class {
 { #category : 'meta' }
 FASTTypeScriptTemplateString class >> annotation [
 
-	<FMClass: #TemplateString super: #FASTTypeScriptEntity>
+	<FMClass: #TemplateString super: #FASTTypeScriptExpression>
 	<package: #'FAST-TypeScript-Model'>
 	<generated>
 	^ self

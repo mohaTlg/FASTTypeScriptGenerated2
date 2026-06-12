@@ -1,0 +1,168 @@
+| url jsonString rawData namedNodes toCamelCase resolveVariableName parentMap resolveParent excludedNodes streamH streamR |
+"1. Récupération des données JSON"
+url := 'https://raw.githubusercontent.com/tree-sitter/tree-sitter-typescript/master/typescript/src/node-types.json'.
+jsonString := ZnClient new get: url.
+rawData := NeoJSONReader fromString: jsonString.
+namedNodes := rawData select: [ :node | (node at: 'named' ifAbsent: [ false ]) = true ].
+"2. Utilitaire CamelCase"
+toCamelCase := [ :str |
+    | parts |
+    parts := str asString substrings: '_'.
+    parts isEmpty 
+        ifTrue: [ '' ] 
+        ifFalse: [ parts first, (String streamContents: [ :s | (parts allButFirst) do: [ :p | s nextPutAll: p capitalized ] ]) ]
+].
+"3. Résolveur de noms de variables (gestion des mots-clés réservés avec préfixe _)"
+resolveVariableName := [ :type |
+    | camel |
+    camel := toCamelCase value: type.
+    camel = 'false' ifTrue: [ '_false' ] ifFalse: [
+    camel = 'true' ifTrue: [ '_true' ] ifFalse: [
+    camel = 'super' ifTrue: [ '_super' ] ifFalse: [
+    camel ] ] ]
+].
+"4. Liste d'exclusion restreinte au strict minimum (conception sur mesure Moose/FAST)"
+excludedNodes := #(
+    'classDeclaration' 'interfaceDeclaration' 'enumDeclaration'
+    'number' 'string' 'null' 'boolean' '_true' '_false'
+    'program' 'expression' 'statement' 'declaration' 'typeAnnotation'
+    'assertsAnnotation' 'identifier' 'typeArguments' 'typePredicateAnnotation'
+) asSet.
+"5. Construction de la table des parents (subtypes) à partir du JSON"
+parentMap := Dictionary new.
+rawData do: [ :node |
+    | parentType |
+    parentType := node at: 'type'.
+    (node at: 'subtypes' ifAbsent: [ #() ]) do: [ :subNode |
+        parentMap at: (subNode at: 'type') asString put: parentType asString.
+    ].
+].
+"6. Résolveur de Traits / Classes parents récursif pour Pharo (robuste aux types String/Symbol)"
+resolveParent := nil.
+resolveParent := [ :type |
+    | parent |
+    parent := parentMap at: type asString ifAbsent: [ nil ].
+    parent isNil
+        ifTrue: [
+            (type asString includesSubstring: 'expression') ifTrue: [ 'expression' ] ifFalse: [
+            (type asString includesSubstring: 'statement') ifTrue: [ 'statement' ] ifFalse: [
+            (type asString includesSubstring: 'declaration') ifTrue: [ 'tDeclaration' ] ifFalse: [
+            (type asString includesSubstring: 'pattern') ifTrue: [ 'tExpression' ] ifFalse: [
+            (type asString = 'type') ifTrue: [ 'tExpression' ] ifFalse: [
+            'entity' ] ] ] ] ]
+        ]
+        ifFalse: [
+            | resolvedParent |
+            resolvedParent := resolveParent value: parent asString.
+            parent asString = 'expression' ifTrue: [ 'expression' ] ifFalse: [
+            parent asString = 'statement' ifTrue: [ 'statement' ] ifFalse: [
+            parent asString = 'declaration' ifTrue: [ 'tDeclaration' ] ifFalse: [
+            parent asString = 'pattern' ifTrue: [ 'tExpression' ] ifFalse: [
+            parent asString = 'primary_type' ifTrue: [ 'tExpression' ] ifFalse: [
+            parent asString = 'type' ifTrue: [ 'tExpression' ] ifFalse: [
+            resolvedParent ] ] ] ] ] ]
+        ]
+].
+"7. Préparation du flux pour la Hiérarchie (defineHierarchy)"
+streamH := WriteStream on: String new.
+streamH nextPutAll: 'defineHierarchy'; cr; nextPutAll: '    super defineHierarchy.'; cr; cr.
+streamH nextPutAll: '    " --- Base FAST & Moose --- "'; cr.
+streamH nextPutAll: '    entity --|> tEntity.'; cr.
+streamH nextPutAll: '    entity --|> tWithComments.'; cr.
+streamH nextPutAll: '    program --|> tEntity.'; cr.
+streamH nextPutAll: '    program --|> #THasImmediateSource.'; cr.
+streamH nextPutAll: '    program withPrecedenceOf: #THasImmediateSource.'; cr.
+streamH nextPutAll: '    _ERROR --|> #THasImmediateSource.'; cr.
+streamH nextPutAll: '    program withPrecedenceOf: #THasImmediateSource.'; cr; cr.
+streamH nextPutAll: '    " --- Littéraux & Types de Base --- "'; cr.
+streamH nextPutAll: '    number --|> literal.'; cr.
+streamH nextPutAll: '    string --|> literal.'; cr.
+streamH nextPutAll: '    null --|> literal.'; cr.
+streamH nextPutAll: '    boolean --|> literal.'; cr.
+streamH nextPutAll: '    _true --|> boolean.'; cr.
+streamH nextPutAll: '    _false --|> boolean.'; cr; cr.
+streamH nextPutAll: '    literal --|> tLiteral.'; cr.
+streamH nextPutAll: '    string --|> #TStringLiteral.'; cr.
+streamH nextPutAll: '    boolean --|> #TBooleanLiteral.'; cr.
+streamH nextPutAll: '    null --|> #TNullPointerLiteral.'; cr; cr.
+streamH nextPutAll: '    " --- Classes Intermédiaires vers les Traits --- "'; cr.
+streamH nextPutAll: '    expression --|> tExpression.'; cr.
+streamH nextPutAll: '    statement --|> tStatement.'; cr; cr.
+streamH nextPutAll: '    " --- Règles Spécifiques Déclarations & Modifieurs --- "'; cr.
+streamH nextPutAll: '    classDeclaration --|> tDeclaration.'; cr.
+streamH nextPutAll: '    classDeclaration --|> tWithDeclarations.'; cr.
+streamH nextPutAll: '    classDeclaration --|> tWithModifiers.'; cr.
+streamH nextPutAll: '    classDeclaration --|> tStatement.'; cr; cr.
+streamH nextPutAll: '    interfaceDeclaration --|> tDeclaration.'; cr.
+streamH nextPutAll: '    interfaceDeclaration --|> tWithDeclarations.'; cr.
+streamH nextPutAll: '    interfaceDeclaration --|> tWithModifiers.'; cr.
+streamH nextPutAll: '    interfaceDeclaration --|> tStatement.'; cr; cr.
+streamH nextPutAll: '    enumDeclaration --|> tDeclaration.'; cr.
+streamH nextPutAll: '    enumDeclaration --|> tWithDeclarations.'; cr.
+streamH nextPutAll: '    enumDeclaration --|> tWithModifiers.'; cr.
+streamH nextPutAll: '    enumDeclaration --|> tStatement.'; cr; cr.
+streamH nextPutAll: '    " --- Annotations & Liaisons spécifiques --- "'; cr.
+streamH nextPutAll: '    typeAnnotation --|> tOptionalField.'; cr.
+streamH nextPutAll: '    typeAnnotation --|> tReturnType.'; cr.
+streamH nextPutAll: '    typeAnnotation --|> tExpression.'; cr.
+streamH nextPutAll: '    assertsAnnotation --|> tReturnType.'; cr.
+streamH nextPutAll: '    identifier --|> tOptionalField.'; cr.
+streamH nextPutAll: '    typeArguments --|> tOptionalField.'; cr.
+streamH nextPutAll: '    typePredicateAnnotation --|> typeAnnotation.'; cr; cr.
+streamH nextPutAll: '    " --- Cas Particulier ExpressionStatement (Trait additionnel) --- "'; cr.
+streamH nextPutAll: '    expressionStatement --|> #TExpressionStatement.'; cr; cr.
+streamH nextPutAll: '    " --- HIERARCHIE AUTO-GENEREE (DEPUIS NODE-TYPES.JSON) --- "'; cr.
+"8. Préparation du flux pour les Relations (defineRelations)"
+streamR := WriteStream on: String new.
+streamR nextPutAll: 'defineRelations'; cr; nextPutAll: '    super defineRelations.'; cr; cr.
+streamR nextPutAll: '    (entity property: #genericChildren) <>-* (entity property: #genericParent).'; cr; cr.
+"9. Génération des règles d'héritage manquantes et des relations"
+namedNodes do: [ :node | 
+    | nodeType varName fields children subtypes |
+    
+    nodeType := node at: 'type'.
+    varName := resolveVariableName value: nodeType.
+    fields := node at: 'fields' ifAbsent: [ Dictionary new ].
+    children := node at: 'children' ifAbsent: [ nil ].
+    subtypes := node at: 'subtypes' ifAbsent: [ nil ].
+    
+    " --- RÈGLE C : Héritage automatique pour les classes non exclues --- "
+    subtypes isNil ifTrue: [
+        (excludedNodes includes: varName) ifFalse: [
+            | parentVar |
+            parentVar := resolveParent value: nodeType.
+            varName = parentVar ifFalse: [
+                streamH nextPutAll: '    ', varName, ' --|> ', parentVar, '.'; cr.
+            ].
+        ].
+    ].
+    " --- RÈGLE A : Relations 1-to-1 (defineRelations) --- "
+    fields isEmpty ifFalse: [ 
+        streamR nextPutAll: '    " ', nodeType asUppercase, ' "'; cr.
+        fields keysAndValuesDo: [ :fieldName :fieldInfo |
+            | camelField |
+            camelField := toCamelCase value: fieldName.
+            
+            streamR nextPutAll: '    ((', varName, ' property: #', camelField, ') comment: '''')'; cr.
+            streamR nextPutAll: '    <>- ((tEntity property: #', varName, camelField capitalized, 'Owner) comment: '''').'; cr; cr.
+        ].
+    ].
+    " --- RÈGLE B : Collections (defineRelations) --- "
+    (fields isEmpty and: [ children isNotNil ]) ifTrue: [ 
+        | isMultiple |
+        isMultiple := children at: 'multiple' ifAbsent: [ false ].
+        
+        isMultiple ifTrue: [ 
+            streamR nextPutAll: '    " ', nodeType asUppercase, ' (COLLECTION) "'; cr.
+            streamR nextPutAll: '    ((', varName, ' property: #childrenNodes) comment: '''')'; cr.
+            streamR nextPutAll: '    <>-* ((tEntity property: #', varName, 'Owner) comment: '''').'; cr; cr.
+        ].
+    ].
+].
+"10. Compilation Automatique"
+FASTTypeScriptMetamodelGenerator compile: streamH contents classified: 'definition'.
+FASTTypeScriptMetamodelGenerator compile: streamR contents classified: 'definition'.
+Transcript clear.
+Transcript show: 'Test abstract_class_declaration: ', (resolveParent value: 'abstract_class_declaration'); cr.
+Transcript show: 'Test lexical_declaration: ', (resolveParent value: 'lexical_declaration'); cr.
+Transcript show: 'Hiérarchie fusionnée et relations compilées avec succès !'; cr.

@@ -1,4 +1,4 @@
-| url jsonString rawData namedNodes toCamelCase resolveVariableName parentMap resolveParent excludedNodes streamH streamR |
+| url jsonString rawData namedNodes toCamelCase resolveVariableName parentMap resolveParent excludedNodes streamT streamH streamR |
 "1. Récupération des données JSON"
 url := 'https://raw.githubusercontent.com/tree-sitter/tree-sitter-typescript/master/typescript/src/node-types.json'.
 jsonString := ZnClient new get: url.
@@ -63,6 +63,23 @@ resolveParent := [ :type |
             resolvedParent ] ] ] ] ] ]
         ]
 ].
+"6.5. Préparation du flux pour les Traits (defineTraits)"
+streamT := WriteStream on: String new.
+streamT nextPutAll: 'defineTraits'; cr; nextPutAll: '    super defineTraits.'; cr; cr.
+streamT nextPutAll: '    tDeclaration := self newTraitNamed: #TDeclaration comment: ''I am a declaration in Typescript''.'; cr.
+streamT nextPutAll: '    tWithDeclarations := self newTraitNamed: #TWithDeclarations comment: ''I have declarations''.'; cr.
+streamT nextPutAll: '    tModifier := self newTraitNamed: #TModifier comment: ''I am a modifier''.'; cr.
+streamT nextPutAll: '    tWithModifiers := self newTraitNamed: #TWithModifiers comment: ''I have modifiers''.'; cr.
+streamT nextPutAll: '    "From FAST"'; cr.
+streamT nextPutAll: '    tEntity := self remoteTrait: #TEntity withPrefix: #FAST.'; cr.
+streamT nextPutAll: '    tWithComments := self remoteTrait: #TWithComments withPrefix: #FAST.'; cr.
+streamT nextPutAll: '    tStatement := self remoteTrait: #TStatement withPrefix: #FAST.'; cr.
+streamT nextPutAll: '    tNamedEntity := self remoteTrait: #TNamedEntity withPrefix: #FAST.'; cr.
+streamT nextPutAll: '    tLiteral := self remoteTrait: #TLiteral withPrefix: #FAST.'; cr.
+streamT nextPutAll: '    tExpression := self remoteTrait: #TExpression withPrefix: #FAST.'; cr.
+streamT nextPutAll: '    tWithParameters := self remoteTrait: #TWithParameters withPrefix: #FAST.'; cr.
+streamT nextPutAll: '    tReturnType := self newTraitNamed: #TReturnType comment: ''I am a Return Type in Typescript''.'; cr.
+streamT nextPutAll: '    tOptionalField := self newTraitNamed: #TOptionalField comment: ''I represent optional field in Typescript''.'; cr; cr.
 "7. Préparation du flux pour la Hiérarchie (defineHierarchy)"
 streamH := WriteStream on: String new.
 streamH nextPutAll: 'defineHierarchy'; cr; nextPutAll: '    super defineHierarchy.'; cr; cr.
@@ -160,6 +177,7 @@ namedNodes do: [ :node |
     ].
 ].
 "10. Compilation Automatique"
+FASTTypeScriptMetamodelGenerator compile: streamT contents classified: 'definition'.
 FASTTypeScriptMetamodelGenerator compile: streamH contents classified: 'definition'.
 FASTTypeScriptMetamodelGenerator compile: streamR contents classified: 'definition'.
 Transcript clear.
